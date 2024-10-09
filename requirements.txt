@@ -1,0 +1,18 @@
+ucimlrepo # for dataset
+h5py
+scikit-survival
+scikit-multilearn
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+scipy
+sklearn_pandas
+SurvivalEVAL
+tqdm
+pycox
+lifelines
+wandb
+torchtuples
+torch
