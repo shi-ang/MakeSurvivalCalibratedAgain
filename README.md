@@ -16,7 +16,7 @@ This repository contains the code for the experiments in the papers. The code is
 - `CondCalEvaluation/`: The implementation of the conditional calibration score, $\text{Cal}_{\text{ws}}$.
 - `data/`: The datasets used in the experiments.
 - `figs/`: The figures presented in the papers.
-- `icp/`: The implementation of inductive conformal prediction (ICP). It contains two methods: `CSD` and `CSD-iPOT`.
+- `icp/`: The implementation of inductive conformal prediction (ICP) for survival analysis. It contains two methods: **CSD** (class name: `ConformalSurvDist`) and **CSD-iPOT** (class name: `CSDiPOT`).
 - `models/`: Some self-implemented models (`DeepSurv`/`CoxPH`, `N-MTLR`/`MTLR`, `CQRNN`, `LogNormalNN`) used in the experiments.
 - `utils/`: The utility functions used in the experiments.
 - `requirements.txt`: The requirements file to install the necessary packages.

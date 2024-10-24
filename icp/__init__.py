@@ -50,7 +50,12 @@ class ConformalSurvivalBase(BaseEstimator):
 
 
 class ConformalSurvDist(ConformalSurvivalBase):
-    """Conformal survival distribution."""
+    """Conformalized survival distribution.
+
+    Shi-ang Qi, Yakun Yu, Russell Greiner. Conformalized Survival Distributions: A Generic Post-Process to Increase
+    Calibration. ICML 2024.
+    https://proceedings.mlr.press/v235/qi24a.html
+    """
     def __init__(
             self,
             nc_function: QuantileRegressionNC,
@@ -144,7 +149,11 @@ class ConformalSurvDist(ConformalSurvivalBase):
 
 
 class CSDiPOT(ConformalSurvivalBase):
-    """Conditional conformal survival distribution predictor."""
+    """Conformalized survival distribution using individual probability at observed time.
+
+    Shi-ang Qi, Yakun Yu, Russell Greiner. Toward Conditional Distribution Calibration in Survival Prediction.
+    NeurIPS 2024.
+    """
     def __init__(
             self,
             nc_function: SurvivalPredictionNC,
