@@ -8,6 +8,19 @@ This official repository contains the code for
 
 It also contains the implementations of the worst-slab distribution calibration score, $\text{Cal}_{\text{ws}}$. See [2]. 
 
+## Introduction
+
+**TL;DR** This repository contains two methods that enhance the calibration of a survival analysis model, without compromising its discriminative ability.
+
+|                                                                                                                ![compare](methods_illust.png)                                                                                                                | 
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| 
+| **Visual illustration of using *CSD* and *CSD-iPOT* to make the prediction calibrated.** (a-c) Raw survival distribution outputs with histogram and P-P plot; (d-g) CSD steps with histogram and P-P plot; (h-k) CSD-iPOT steps with histogram and P-P plot. |
+
+Both **CSD** and **CSD-iPOT** approaches use the same general framework of conformal prediction, but they differ in
+how to calculate the conformity score and adjust the positions of the predictions. Note that in the above Figure,
+the horizontal positions of the circles remain unchanged for **CSD** while the vertical positions of the
+circles remain unchanged for **CSD-iPOT**.
+About details of the algorithms (e.g., how to calculate the conformity score, how to handle censorship, etc), please refer to the paper.
 
 ## Overview
 
@@ -18,6 +31,7 @@ This repository contains the code for the experiments in the papers. The code is
 - `figs/`: The figures presented in the papers.
 - `icp/`: The implementation of inductive conformal prediction (ICP) for survival analysis. It contains two methods: **CSD** (class name: `ConformalSurvDist`) and **CSD-iPOT** (class name: `CSDiPOT`).
 - `models/`: Some self-implemented models (`DeepSurv`/`CoxPH`, `N-MTLR`/`MTLR`, `CQRNN`, `LogNormalNN`) used in the experiments.
+- `posters/`: The poster presentations for both methods.
 - `utils/`: The utility functions used in the experiments.
 - `requirements.txt`: The requirements file to install the necessary packages.
 - `README.md`: This file.
@@ -74,7 +88,7 @@ For more details on the argument options, please refer to the `args/__init__.py`
 ## Reference
 [1] Shi-ang Qi, Yakun Yu, Russell Greiner. Conformalized Survival Distributions: A Generic Post-Process to Increase Calibration. ICML 2024. [[paper](https://proceedings.mlr.press/v235/qi24a.html)]
 
-[2] Shi-ang Qi, Yakun Yu, Russell Greiner. Toward Conditional Distribution Calibration in Survival Prediction. NeurIPS 2024. 
+[2] Shi-ang Qi, Yakun Yu, Russell Greiner. Toward Conditional Distribution Calibration in Survival Prediction. NeurIPS 2024. [[paper](https://openreview.net/forum?id=l8XnqbQYBK)]
 
 ## Citation
 
@@ -95,7 +109,14 @@ We recommend you use the following to cite `CSD` method in your publications:
 }
 ```
 
-We recommend you use the following to cite `CSD-iPOT` method in your publications (official proceedings will be updated soon):
+We recommend you use the following to cite `CSD-iPOT` method in your publications:
 ```
-pending
+@inproceedings{qi2024toward,
+  title =       {Toward Conditional Distribution Calibration in Survival Prediction},
+  author =      {Qi, Shi-Ang and Yu, Yakun and Greiner, Russell},
+  booktitle =   {Advances in Neural Information Processing Systems},
+  volume =      {37},
+  year =        {2024},
+  publisher =   {Curran Associates, Inc.},
+}
 ```
