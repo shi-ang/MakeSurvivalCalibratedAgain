@@ -58,7 +58,7 @@ def make_support() -> tuple[pd.DataFrame, list[str]]:
     standard values, the mean (for continuous variables) or the mode
     (for categorical variables).
     Refer to the dataset description at
-    https://biostat.app.vumc.org/wiki/Main/SupportDesc for more information.
+    https://hbiostat.org/data/repo/supportdesc for more information.
 
     Returns
     -------
@@ -72,7 +72,7 @@ def make_support() -> tuple[pd.DataFrame, list[str]]:
     [1] W. A. Knaus et al., The SUPPORT Prognostic Model: Objective Estimates of Survival
     for Seriously Ill Hospitalized Adults, Ann Intern Med, vol. 122, no. 3, p. 191, Feb. 1995.
     """
-    url = "https://biostat.app.vumc.org/wiki/pub/Main/DataSets/support2csv.zip"
+    url = "https://hbiostat.org/data/repo/support2csv.zip"
 
     # Remove other target columns and other model predictions
     cols_to_drop = ["hospdead", "slos", "charges", "totcst", "totmcst", "avtisst", "sfdm2",
