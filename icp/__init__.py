@@ -105,13 +105,13 @@ class ConformalSurvDist(ConformalSurvivalBase):
                 idx = (category_map == cond)
                 cal_scores = self.nc_function.score(feature_df=features[idx, :], t=t[idx], e=e[idx],
                                                     quantile_levels=self.quantile_levels,
-                                                    method=self.decensor_method)
+                                                    n_sample=self.n_sample if self.decensor_method == 'sampling' else None)
                 self.cal_scores[cond] = np.sort(cal_scores, 0)[::-1]
         else:
             self.categories = np.array([0])
             cal_scores = self.nc_function.score(feature_df=features, t=t, e=e,
                                                 quantile_levels=self.quantile_levels,
-                                                method=self.decensor_method)
+                                                n_sample=self.n_sample if self.decensor_method == 'sampling' else None)
             self.cal_scores = {0: np.sort(cal_scores, 0)[::-1]}
 
     def predict(self, x):

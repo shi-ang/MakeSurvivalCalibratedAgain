@@ -298,7 +298,8 @@ class QuantileRegressionNC(sklearn.base.BaseEstimator):
             t: np.ndarray,
             e: np.ndarray,
             quantile_levels: np.ndarray,
-            method: str):
+            n_sample: int = 1000
+    ):
         """Calculates the nonconformity score of a set of samples.
 
         Parameters
@@ -324,8 +325,8 @@ class QuantileRegressionNC(sklearn.base.BaseEstimator):
 
         quantile_predictions = self.predict_nc(x, quantile_levels, x_names)
 
-        if method == 'sampling':
-            quantile_predictions = np.repeat(quantile_predictions, 1000, axis=0)
+        if n_sample is not None:
+            quantile_predictions = np.repeat(quantile_predictions, n_sample, axis=0)
 
         assert quantile_predictions.shape[0] == y.shape[0], "Sample size does not match."
 
@@ -357,7 +358,7 @@ class QuantileRegressionNC(sklearn.base.BaseEstimator):
             x: np.ndarray,
             quantile_levels: np.ndarray,
             feature_names: list[str] = None
-    ) -> (np.ndarray, np.ndarray):
+    ) -> np.ndarray:
         """
         Predict the nonconformity survival curves for a given feature matrix x
 
@@ -368,11 +369,8 @@ class QuantileRegressionNC(sklearn.base.BaseEstimator):
         :param quantile_levels: numpy array of shape [n_quantiles]
             quantile levels to predict
         :return:
-        Non-conformalized predictions for the survival curves
-            surv_prob: numpy array of shape [n_samples, n_timepoints]
-                survival probability for each sample at each time point
-            time_coordinates: numpy array of shape [n_samples, n_timepoints]
-                time coordinates for each sample
+        Quantile predictions for the survival curves
+            quantile_predictions: numpy array of shape [n_samples, n_quantiles]
         """
         if isinstance(self.model, CQRNN):
             x = torch.from_numpy(x).float().to(self.args.device)
