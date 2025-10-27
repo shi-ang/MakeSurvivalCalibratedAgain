@@ -6,8 +6,10 @@ from datetime import datetime
 from tqdm import trange
 import torch
 import torch.nn as nn
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
-from sklearn_pandas import DataFrameMapper
+from sklearn.pipeline import Pipeline
+from sklearn.compose import make_column_selector, ColumnTransformer
 import wandb
 import torchtuples as tt
 
@@ -55,15 +57,36 @@ def main(args=None):
     wandb.define_metric("infer_time", summary="mean")
 
     args = wandb.config
-    data, cols_stdz = make_survival_data(args.data)
+    data = make_survival_data(args.data)
     conditions = get_cond_functions(args.data)
     features = data.columns.to_list()
     assert "time" in data.columns and "event" in data.columns, "The event time variable and censor indicator " \
                                                                "variable is missing or need to be renamed."
-    cols_wo_stdz = list(set(features).symmetric_difference(cols_stdz))  # including time and event
-    stdz = [([col], StandardScaler()) for col in cols_stdz]
-    wo_stdz = [(col, None) for col in cols_wo_stdz]
-    columns_transform = stdz + wo_stdz
+    # Continuous features: median imputation + scaling
+    enc_con = Pipeline(steps=[
+        ('impute', SimpleImputer(strategy='median')),
+        ('scale', StandardScaler()),
+    ])
+    sel_con = make_column_selector(pattern='^num_')
+
+    # Non-continuous features: mode imputation only
+    enc_cat = Pipeline(steps=[
+        ('impute', SimpleImputer(strategy='most_frequent')),
+    ])
+    sel_cat = make_column_selector(
+        pattern='^(?!num_|time$|event$).*'  # everything NOT num_, time, or event
+    )
+
+    enc_df = ColumnTransformer(
+        transformers=[
+            ('num', enc_con, sel_con),
+            ('cat', enc_cat, sel_cat),
+        ],
+        remainder='passthrough',
+        verbose_feature_names_out=False
+    )
+    enc_df.set_output(transform='pandas')
+
     if args.early_stop:
         pct_train = 0.8
         pct_val = 0.1
@@ -98,11 +121,9 @@ def main(args=None):
         data_train, data_val, data_test = survival_data_split(data, stratify_colname='both', frac_train=pct_train,
                                                               frac_val=pct_val, frac_test=pct_test, random_state=seed_i)
         # standardize the data
-        # [features] to keep the order, otherwise the feature order will be changed and the result is not reproducible
-        mapper_df = DataFrameMapper(columns_transform, df_out=True)
-        data_train = mapper_df.fit_transform(data_train).astype('float32')[features]
-        data_val = mapper_df.transform(data_val).astype('float32')[features] if not data_val.empty else data_val
-        data_test = mapper_df.transform(data_test).astype('float32')[features]
+        data_train = enc_df.fit_transform(data_train).astype('float32')
+        data_val = enc_df.transform(data_val).astype('float32') if not data_val.empty else data_val
+        data_test = enc_df.transform(data_test).astype('float32')
         data_train_val = pd.concat([data_train, data_val], ignore_index=True) if not data_val.empty else data_train
 
         x_train = data_train.drop(["time", "event"], axis=1).values

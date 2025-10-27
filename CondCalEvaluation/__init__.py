@@ -3,7 +3,7 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from utils.util_survival import xcal_from_hist
 
-from SurvivalEVAL.Evaluations.D_Calibration import d_calibration, create_censor_binning
+from SurvivalEVAL.Evaluations.DistributionCalibration import d_calibration, create_censor_hist
 from SurvivalEVAL.Evaluations.util import check_and_convert, NumericArrayLike
 
 
@@ -121,7 +121,7 @@ def wsc_v(X, event_indicators, predict_probs, num_bins, delta, v):
         if event_indicators[i]:
             binning[i, position[i] - 1] += 1
         else:
-            binning[i, :] = create_censor_binning(predict_probs[i], num_bins)
+            binning[i, :] = create_censor_hist(predict_probs[i], num_bins)
 
     n = len(predict_probs)
     z = np.dot(X, v)

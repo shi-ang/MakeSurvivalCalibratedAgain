@@ -11,7 +11,8 @@ from scipy import interpolate
 
 from skmultilearn.model_selection import iterative_train_test_split
 
-from SurvivalEVAL.Evaluations.util import check_monotonicity, KaplanMeierArea, km_mean
+from SurvivalEVAL.Evaluations.util import check_monotonicity
+from SurvivalEVAL.NonparametricEstimator.SingleEvent import KaplanMeierArea, km_mean
 from SurvivalEVAL.Evaluations.custom_types import NumericArrayLike
 
 

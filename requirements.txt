@@ -1,5 +1,3 @@
-ucimlrepo # for dataset
-h5py
 scikit-survival
 scikit-multilearn
 scikit-learn
@@ -8,10 +6,9 @@ numpy
 matplotlib
 seaborn
 scipy
-sklearn_pandas
-SurvivalEVAL
+SurvivalEVAL>=0.5.1
 tqdm
-pycox
+pycox>=0.3.0
 lifelines
 wandb
 torchtuples

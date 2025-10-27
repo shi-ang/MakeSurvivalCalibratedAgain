@@ -38,7 +38,7 @@ def generate_parser():
 
     # --------------------------------
     # General experiment parameters
-    parser.add_argument('--data', type=str, default="MIMIC-IV_all",
+    parser.add_argument('--data', type=str, default="PBC",
                         choices=[
                             "VALCT", "DLBCL", "HFCR", "PBC", "WHAS500", "GBM", "GBSG",
                             "PDM", "METABRIC", "churn", "NACD", "FLCHAIN", "SUPPORT", "employee",
@@ -49,7 +49,7 @@ def generate_parser():
                         help="Number of experiments to run.")
     parser.add_argument('--seed', type=int, default=0,
                         help="Random seed.")
-    parser.add_argument('--model', type=str, default="MTLR",
+    parser.add_argument('--model', type=str, default="CQRNN",
                         choices=["MTLR", "DeepHit", "CoxPH", "AFT", "GB",
                                  "CoxTime", "CQRNN", "LogNormalNN", "KM"],
                         help="Model name.")
